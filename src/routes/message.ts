@@ -10,8 +10,11 @@ export class MessageRoute {
       mergeParams: true
     })
     const appController = new MessageController()
-    appRoute.post('/',
-      appController.addRoute
+    appRoute.post('/:communityId/:channelId/:operation',
+      appController.saveRoute
+    )
+    appRoute.get('/:communityId/:channelId/:operation',
+      appController.viewDetailsRoute
     )
     return appRoute
   }

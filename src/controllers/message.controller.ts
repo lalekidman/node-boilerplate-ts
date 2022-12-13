@@ -1,25 +1,39 @@
 import {Request, Response, NextFunction, Router} from 'express'
 import * as HttpStatus from 'http-status'
 import {ErrorCodes, ErrorResponse, SuccessResponse} from '@app/common/http-response'
-
+import {extractValue} from 'ts-enum-extractor'
 import {
   MessageMetricsSaveUsecase,
   MessageMetricsViewDetailsUsecase
 } from '@app/modules/message-metrics/usecases'
+import { MESSAGE_METRICS_OPERATION } from '@app/modules/message-metrics/enums'
 
+const availableOperation = extractValue(MESSAGE_METRICS_OPERATION)
 export default class AppController {
   
-  public addRoute = async (req: Request, res: Response, next: NextFunction) => {
+  public async validateOperation (operation: string) {
+    if (!availableOperation.includes(operation)) {
+      // throw error here?
+      throw new Error(`Invalid "operation" value. only allowed values are "${availableOperation.join(", ")}"`)
+    }
+    return true
+  }
+  public saveRoute = async (req: Request, res: Response, next: NextFunction) => {
+    const {
+      count = 1
+    } = req.body
+
     const {
       communityId,
       channelId,
-      operation = 'write',
-      count = 1
-    } = req.body
-    const saveUsecase = new MessageMetricsSaveUsecase()
+      operation
+    } = req.params
+    // need to validate the operation. allowed values `read`, `write`
       
     try {
-      const node = await saveUsecase.execute({
+      await this.validateOperation(operation)
+      
+      const node = await new MessageMetricsSaveUsecase().execute({
         channelId,
         communityId,
         operation,
@@ -44,10 +58,10 @@ export default class AppController {
       channelId,
       operation = 'write',
     } = req.params
-    const viewDetailsUsecase = new MessageMetricsViewDetailsUsecase()
       
     try {
-      const node = await viewDetailsUsecase.getOne({
+      await this.validateOperation(operation)
+      const node = await new MessageMetricsViewDetailsUsecase().getOne({
         channelId,
         communityId,
         operation

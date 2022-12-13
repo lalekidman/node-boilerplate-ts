@@ -5,13 +5,13 @@ export class Database {
    */
   public connect() {
     const databaseConnectionString = (process.env.NODE_ENV === 'test' ? process.env.MONGO_TEST_URI :  process.env.DB_CONNECTION_STRING) as string
-    console.log("databaseConnectionStringaa: ", databaseConnectionString)
+    console.log("databaseConnectionString: ", databaseConnectionString)
     return mongoose
       .connect(databaseConnectionString, {
         useNewUrlParser: true,
       })
       .then(() => {
-        console.log('Successfully connected to database.x')
+        console.log('Successfully connected to database')
         return true
       })
       .catch(err => {
