@@ -1,5 +1,7 @@
 import {Router} from 'express'
-import {UserRoute} from './user'
+import {
+  MessageRoute
+} from './message'
 export class AppRoute {
   
   constructor () {
@@ -13,7 +15,7 @@ export class AppRoute {
     const appRoute = Router({
       mergeParams: true
     })
-    appRoute.use("/users", new UserRoute().expose())
+    appRoute.use("/messages", new MessageRoute().expose())
     return appRoute
   }
   /**
@@ -23,7 +25,7 @@ export class AppRoute {
     const appRoute = Router({
       mergeParams: true
     })
-    appRoute.use("/users", new UserRoute().expose())
+    appRoute.use("/messages", new MessageRoute().expose())
     return appRoute
   }
   /**
@@ -33,7 +35,7 @@ export class AppRoute {
     const appRoute = Router({
       mergeParams: true
     })
-    appRoute.use("/users", new UserRoute().expose())
+    appRoute.use("/messages", new MessageRoute().expose())
     return appRoute
   }
   /**
@@ -45,7 +47,7 @@ export class AppRoute {
     })
     appRoute.use("/", this.privateRoutes())
     appRoute.use("/api", this.publicRoutes())
-    appRoute.use("/api", this.protectedRoutes())
+    // appRoute.use("/api", this.protectedRoutes())
     return appRoute
   }
 }

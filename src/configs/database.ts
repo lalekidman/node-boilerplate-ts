@@ -4,13 +4,14 @@ export class Database {
    * connect to the repository/database
    */
   public connect() {
-    const databaseConnectionString = (process.env.NODE_ENV === 'test' ? process.env.MONGO_TEST_URI :  `${process.env.DB_PREFIX}://${process.env.DB_HOST}/${process.env.DB_NAME}`) as string
+    const databaseConnectionString = (process.env.NODE_ENV === 'test' ? process.env.MONGO_TEST_URI :  process.env.DB_CONNECTION_STRING) as string
+    console.log("databaseConnectionStringaa: ", databaseConnectionString)
     return mongoose
       .connect(databaseConnectionString, {
         useNewUrlParser: true,
       })
       .then(() => {
-        console.log('Successfully connected to database.')
+        console.log('Successfully connected to database.x')
         return true
       })
       .catch(err => {

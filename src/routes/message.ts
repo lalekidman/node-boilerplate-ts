@@ -1,7 +1,7 @@
 import {Router} from 'express'
-import UserController from '@app/controllers/user.controller'
+import MessageController from '@app/controllers/message.controller'
 // const multiPartMiddleWare = require('connect-multiparty')()
-export class UserRoute {
+export class MessageRoute {
   /**
    * expose the routes
    */
@@ -9,7 +9,7 @@ export class UserRoute {
     const appRoute = Router({
       mergeParams: true
     })
-    const appController = new UserController()
+    const appController = new MessageController()
     appRoute.post('/',
       appController.addRoute
     )

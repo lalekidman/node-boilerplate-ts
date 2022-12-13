@@ -148,22 +148,6 @@ export default abstract class GeneralGatewayService<T extends Document, K> {
       throw err
     }
   }
-  // /**
-  //  * update multiple/many documents
-  //  * @param query
-  //  * @param data
-  //  */
-  // public updateMany(query: Record<keyof K, any>, data: K) {
-  //   return this.collectionModel.updateMany(
-  //     query as any,
-  //     {
-  //       $set: data,
-  //     } as any
-  //   )
-  //   .then((response) => {
-  //     return response
-  //   })
-  // }
   /**
    * update single document
    * @param query
@@ -172,19 +156,14 @@ export default abstract class GeneralGatewayService<T extends Document, K> {
   public async updateOne(
     query: Parameters<Model<T>['find']>[0],
     data: Partial<K>
-  ): Promise<K|null>{
-    try {
-      const document = await this.collectionModel.findOne(query as any)
-      if (document) {
-        document.set(data)
-        await document.save()
-        // @ts-expect-error
-        return document.toObject()
-      }
-      return document
-    } catch (error) {
-      throw error
+  ) {
+    const document = await this.collectionModel.findOne(query as any)
+    if (document) {
+      document.set(data)
+      await document.save()
+      return document.toObject()
     }
+    return null
   }
   public async removeById(id: string) {
     const document = await this.findById(id)
@@ -194,14 +173,14 @@ export default abstract class GeneralGatewayService<T extends Document, K> {
     }
     return document
   }
-  public removeOne(query: Parameters<Model<T>['find']>[0],
-) {
-    return this.collectionModel.findOne(query as any).then(document => {
-      if (document) {
-        document.remove()
-      }
-      return document ? document.toObject() : null
-    })
+
+  public async removeOne(query: Parameters<Model<T>['find']>[0]) {
+    const document = await this.collectionModel.findOne(query as any)
+    if (document) {
+      document.remove()
+      return document.toObject()
+    }
+    return null
   }
 
   public async remove(query: Parameters<Model<T>['find']>[0]) {

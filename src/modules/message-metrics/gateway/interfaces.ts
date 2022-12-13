@@ -4,10 +4,10 @@ import {
 } from '@app/common/gateway/repository/gateway.interfaces'
 
 import {
-  IUserEntity
+  IMessageMetricsEntity
 } from '../entity/interfaces'
 
 // export interface IUserPaginationQuery extends IPaginationQueryParams<IUserEntity> {
 // }
-export interface IUserRepositoryGateway extends IGeneralRepositoryGateway < IUserEntity > {
+export interface IMessageMetricsRepositoryGateway extends IGeneralRepositoryGateway < IMessageMetricsEntity > {
 }

@@ -59,14 +59,3 @@ export interface IEnumExtractor {
   values(enumInput: any): any[]
   keys(enumInput: any): string[]
 }
-
-export interface IUrlShortenerOptions {
-  metaTags: {
-    title: string
-    imageURL: string
-    desc: string
-  }
-}
-export interface IUrlShortener {
-  generate(url: string, options?: IUrlShortenerOptions): Promise<string>
-}

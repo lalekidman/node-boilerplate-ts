@@ -2,7 +2,7 @@
   "scripts": {
     "start": "pm2-dev ./dist/server.js",
     "start:dev": "tsc -w",
-    "dev": "nodemon dist/server.js",
+    "dev": "TS_NODE_BASEURL=./dist nodemon -r tsconfig-paths/register dist/server.js",
     "build": "tsc -p .",
     "lint": "tslint \"src/**/*.ts\" --fix"
   },
@@ -12,6 +12,7 @@
     "compression": "^1.7.4",
     "connect-multiparty": "^2.2.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "eslint": "^7.30.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -33,8 +34,6 @@
   "author": "Darryl Fabian <lalekidman@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/passport": "^1.0.11",
-    "@types/passport-jwt": "^3.0.7",
     "@types/body-parser": "^1.19.0",
     "@types/compression": "^1.7.0",
     "@types/cors": "^2.8.10",
@@ -43,6 +42,8 @@
     "@types/http-status": "^1.1.2",
     "@types/jest": "^27.0.0",
     "@types/morgan": "^1.9.2",
+    "@types/passport": "^1.0.11",
+    "@types/passport-jwt": "^3.0.7",
     "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
@@ -59,7 +60,7 @@
     "ts-jest": "^27.0.4",
     "ts-loader": "^9.2.5",
     "ts-node": "^10.2.0",
-    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths": "^4.1.1",
     "tslint": "^6.1.3",
     "typescript": "^4.3.2"
   },

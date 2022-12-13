@@ -4,18 +4,18 @@ import HttpStatus from 'http-status'
 
 import { HttpErrorResponse, ErrorCodes } from '@app/common/http-response';
 
-const JWTAuthBearerHandler = (req: Request, res: Response, next: NextFunction) => () => (error: any, data: any, errCode: any) {
+const JWTAuthBearerHandler = (req: Request, res: Response, next: NextFunction) => () => (error: any, data: any, errCode: any) => {
+  const UnauthorizedHttpResponse = new HttpErrorResponse(res, HttpStatus.UNAUTHORIZED)
   if (errCode) {
-    res.status(HttpStatus.UNAUTHORIZED).send(new HttpErrorResponse(ErrorCodes.INVALID_ACCESS_TOKEN_FORMAT))
+    UnauthorizedHttpResponse
+      .track(ErrorCodes.INVALID_ACCESS_TOKEN_FORMAT)
+      .throw()
     return
   } else if (error) {
-    if (error.statusCode) {
-      res.status(HttpStatus.UNAUTHORIZED).send(error)
-      return
-    } else {
-      res.status(HttpStatus.UNAUTHORIZED).send(new HttpErrorResponse(ErrorCodes.ACCESS_TOKEN_EXPIRED))
-      return
-    }
+    UnauthorizedHttpResponse
+      .track(ErrorCodes.ACCESS_TOKEN_EXPIRED)
+      .throw()
+    return
   } else {
     req.user = data
     next()

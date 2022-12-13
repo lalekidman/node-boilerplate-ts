@@ -1,0 +1,1 @@
+export const MESSAGE_METRICS_COLLECTION_NAME = 'message_metrics'

@@ -14,33 +14,36 @@
     /* Advanced Options */
     "skipLibCheck": true,                           /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */,
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
       "@app/common/*": [
-        "./src/common/*"
+        "./common/*"
       ],
       
       "@app/configs": [
-        "./src/configs"
+        "./configs"
       ],
       "@app/configs/*": [
-        "./src/configs/*"
+        "./configs/*"
       ],
       "@app/modules/*": [
-        "./src/modules/*"
+        "./modules/*"
       ],
 
       "@app/routes": [
-        "./src/routes",
+        "./routes",
       ],
       "@app/routes/*": [
-        "./src/routes/*"
+        "./routes/*"
       ],
 
       "@app/controllers/*": [
-        "./src/controllers/*"
+        "./controllers/*"
       ],
     }
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   },
   "include": [
     "./src/**/*.ts"

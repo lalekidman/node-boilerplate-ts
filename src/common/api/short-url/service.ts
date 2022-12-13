@@ -1,5 +1,5 @@
 import http from 'axios'
-import { GOOGLE_FIREBASE_DYNAMIC_LINK_API_KEY } from './constants'
+import { GOOGLE_FIREBASE_DYNAMIC_LINK_API_KEY } from '../../constants'
 // import * as http from 'request'
 import {
   IUrlShortenerOptions
