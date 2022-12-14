@@ -54,7 +54,6 @@ export default abstract class GeneralGatewayService<T extends Document, K> {
         [sortValue[0]]: sortValue[1] === 'asc' ? 1 : -1
       }
     }, {})
-    
     const projections = fields ? fields.split(',').reduce((fields: any, fieldName) => ({
       ...fields,
       [fieldName]: 1
@@ -62,9 +61,11 @@ export default abstract class GeneralGatewayService<T extends Document, K> {
     const documentQuery = this.collectionModel.find({
       $and: [
         query,
-        {
-          $or: matches
-        }
+        ...(matches.length >= 1 ? [
+          {
+            $or: matches
+          }
+        ] : [])
       ]
     } as any,
       projections,

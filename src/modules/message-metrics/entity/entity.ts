@@ -22,7 +22,9 @@ export const makeMessageMetricsEntity = ({
     private _operation: string = MESSAGE_METRICS_OPERATION.WRITE;
     private _channelId: string = '';
 
-    readonly createdAt: number = Date.now();
+    private readonly currentDate = new Date()
+
+    readonly createdAt: number = (new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0, 0)).getTime();
     readonly updatedAt: number = Date.now();
 
     constructor(data: Partial < IMessageMetricsEntity > ) {

@@ -7,7 +7,7 @@ import {
   IMessageMetricsUsecaseDependencies
 } from './interfaces'
 
-interface IViewDetailsOption extends Pick<IMessageMetricsEntity,
+interface IListOption extends Pick<IMessageMetricsEntity,
 'communityId' |
 'channelId' |
 'operation'
@@ -18,18 +18,18 @@ interface IViewDetailsOption extends Pick<IMessageMetricsEntity,
   }
 }
 
-export const makeMessageMetricsViewDetailsUsecase = (
+export const makeMessageMetricsListUsecase = (
   deps: IMessageMetricsUsecaseDependencies
 ) => {
 
-  return class MessageMetricsViewDetailsUsecase {
+  return class MessageMetricsListUsecase {
     /**
      * 
      * @param data
      * @returns 
      */
-    public async getOne (
-      options: IViewDetailsOption
+    public async getList (
+      options: IListOption
     ) {
       const {
         communityId,
@@ -40,16 +40,23 @@ export const makeMessageMetricsViewDetailsUsecase = (
           end: new Date(),
         }
       } = options
+      console.log("date: ", date)
       const startDate = (new Date(date.start.getFullYear(), date.start.getMonth(), date.start.getDate(), 0, 0, 0)).getTime()
       const endDate = (new Date(date.end.getFullYear(), date.end.getMonth(), date.end.getDate(), 23, 59, 59)).getTime()
 
-      console.log("E: ", startDate)
-      console.log("E: ", endDate)
+      console.log("startDateE: ", startDate)
+      console.log("E:endDate ", endDate)
 
       const node = await deps.repositoryGateway.list({
         communityId,
         channelId,
         operation,
+        createdAt: {
+          $gte: startDate,
+          $lte: endDate
+        }
+      }, {
+        sort: "createdAt:asc"
       })
       return node
     }

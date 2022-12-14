@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import MessageController from '@app/controllers/message.controller'
+import {MessageMetricsController} from '@app/controllers/message.controller'
 // const multiPartMiddleWare = require('connect-multiparty')()
 export class MessageRoute {
   /**
@@ -9,13 +9,16 @@ export class MessageRoute {
     const appRoute = Router({
       mergeParams: true
     })
-    const appController = new MessageController()
+    const appController = new MessageMetricsController()
     appRoute.post('/:communityId/:channelId/:operation',
       appController.saveRoute
     )
     appRoute.get('/:communityId/:channelId/:operation',
-      appController.viewDetailsRoute
+      appController.listRoute
     )
+    // appRoute.get('/:communityId/:channelId/:operation',
+    //   appController.viewDetailsRoute
+    // )
     return appRoute
   }
 }
