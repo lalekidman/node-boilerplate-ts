@@ -25,11 +25,18 @@ export const makeMessageMetricsSaveUsecase = (
         operation = MESSAGE_METRICS_OPERATION.WRITE
       } = data
       const messageMetricsEntity = new MessageMetricsEntity(data)
+      const currentDate = new Date()
+      const startDate = (new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0)).getTime()
+      const endDate = (new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0, 23, 59, 59)).getTime()
 
       let node = await deps.repositoryGateway.findOne({
         communityId: messageMetricsEntity.communityId,
         channelId: messageMetricsEntity.channelId,
         operation,
+        createdAt: {
+          $gte: startDate,
+          $lte: endDate
+        }
       })
       if (!node) {
         node = await deps.repositoryGateway.insertOne({
