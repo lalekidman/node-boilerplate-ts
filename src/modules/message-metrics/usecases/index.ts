@@ -1,7 +1,7 @@
 import {
   MessageMetricsRepositoryGateway,
   MessageMetricsCollectionModel
-} from '../../../persistents/repository/repository'
+} from '@app/persistents/repository/message-metrics'
 
 import {
   makeMessageMetricsSaveUsecase

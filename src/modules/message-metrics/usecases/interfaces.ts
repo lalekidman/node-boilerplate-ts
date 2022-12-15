@@ -3,7 +3,7 @@ import {
 } from '@app/common/interfaces'
 import {
   IMessageMetricsRepositoryGateway
-} from '../gateway/interfaces'
+} from '../repository-gateway.interfaces'
 
 export interface IMessageMetricsUsecaseDependencies extends IGeneralUsecaseDependencies<IMessageMetricsRepositoryGateway> {
 }

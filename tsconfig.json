@@ -37,8 +37,18 @@
         "./routes/*"
       ],
 
+      "@app/controllers": [
+        "./controllers"
+      ],
       "@app/controllers/*": [
         "./controllers/*"
+      ],
+
+      "@app/persistents/*": [
+        "./persistents/*"
+      ],
+      "@app/persistents": [
+        "./persistents"
       ],
     }
   },

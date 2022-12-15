@@ -7,5 +7,4 @@ export const MessageMetricsEntity = makeMessageMetricsEntity({
   generateId: uuid
 })
 
-
 export * from './interfaces'

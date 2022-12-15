@@ -29,9 +29,6 @@ export const makeMessageMetricsSaveUsecase = (
       const startDate = (new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0)).getTime()
       const endDate = (new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 59)).getTime()
 
-      console.log("startDAxxxxxtE: ", startDate)
-      console.log("endDatexxx: ", endDate)
-
       let node = await deps.repositoryGateway.findOne({
         communityId: messageMetricsEntity.communityId,
         channelId: messageMetricsEntity.channelId,
@@ -57,7 +54,8 @@ export const makeMessageMetricsSaveUsecase = (
         const updatedNode = await deps.repositoryGateway.updateOne({
           _id: node._id
         }, {
-          count: node.count + messageMetricsEntity.count
+          count: node.count + messageMetricsEntity.count,
+          updatedAt: Date.now()
         })
         if (updatedNode) {
           node = updatedNode
