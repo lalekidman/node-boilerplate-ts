@@ -9,3 +9,7 @@ export const SUSPEND_QUEUE_INPUT = {
   BRANCH: 1,
   CUSTOMER: 2
 }
+
+export const COLLECTION_NAMES = {
+  MESSAGE_METRICS: "message_metrics"
+}

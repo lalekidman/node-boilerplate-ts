@@ -1,18 +1,21 @@
 import {
-  MessageMetricsRepositoryGateway
-} from '../gateway/repository-gateway'
+  MessageMetricsRepositoryGateway,
+  MessageMetricsCollectionModel
+} from '../../../persistents/repository/repository'
 
 import {
   makeMessageMetricsSaveUsecase
 } from './save'
+
 import {
   makeMessageMetricsViewDetailsUsecase
 } from './view-details'
+
 import {
   makeMessageMetricsListUsecase
 } from './list'
 
-const repositoryGateway = new MessageMetricsRepositoryGateway()
+const repositoryGateway = new MessageMetricsRepositoryGateway(MessageMetricsCollectionModel)
 
 export const MessageMetricsSaveUsecase = makeMessageMetricsSaveUsecase({
   repositoryGateway

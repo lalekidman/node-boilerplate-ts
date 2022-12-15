@@ -5,11 +5,11 @@ import {
   model
 } from 'mongoose'
 
-import { MESSAGE_METRICS_COLLECTION_NAME } from '../constants'
+import { COLLECTION_NAMES } from '@app/common/constants'
 
 import {
   IMessageMetricsEntity
-} from '../entity/interfaces'
+} from '@app/modules/message-metrics/entity'
 
 export interface IMessageMetricsCollectionModel extends IMessageMetricsEntity, Document {
   _id: string
@@ -46,4 +46,4 @@ const CollectionModelSchemaObject:Record<keyof IMessageMetricsEntity, SchemaType
   }
 }
 const CollectionModelSchema = new Schema(CollectionModelSchemaObject)
-export const MessageMetricsCollectionModel = model<IMessageMetricsCollectionModel>(MESSAGE_METRICS_COLLECTION_NAME, CollectionModelSchema)
+export const MessageMetricsCollectionModel = model<IMessageMetricsCollectionModel>(COLLECTION_NAMES.MESSAGE_METRICS, CollectionModelSchema)
