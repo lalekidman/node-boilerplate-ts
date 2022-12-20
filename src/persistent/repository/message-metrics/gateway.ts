@@ -11,11 +11,12 @@ import {
 
 import {
   IMessageMetricsCollectionModel,
+  MessageMetricsCollectionModel
 } from './schema'
 
 
 export class MessageMetricsRepositoryGateway extends GeneralGatewayService<IMessageMetricsCollectionModel, IMessageMetricsEntity> implements IMessageMetricsRepositoryGateway {
-  constructor (model: Model<IMessageMetricsCollectionModel>) {
-    super(model)
+  constructor () {
+    super(MessageMetricsCollectionModel)
   }
 }

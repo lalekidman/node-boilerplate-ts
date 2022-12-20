@@ -11,7 +11,6 @@ import {
 export const makeMessageMetricsSaveUsecase = (
   deps: IMessageMetricsUsecaseDependencies
 ) => {
-  // or should I just return the object?
   return class MessageMetricsSaveUsecase {
     /**
      * 

@@ -16,6 +16,9 @@
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */,
     "baseUrl": "./src",
     "paths": {
+      "@app/common": [
+        "./common"
+      ],
       "@app/common/*": [
         "./common/*"
       ],
@@ -44,11 +47,11 @@
         "./controllers/*"
       ],
 
-      "@app/persistents/*": [
-        "./persistents/*"
+      "@app/persistent/*": [
+        "./persistent/*"
       ],
-      "@app/persistents": [
-        "./persistents"
+      "@app/persistent": [
+        "./persistent"
       ],
     }
   },
