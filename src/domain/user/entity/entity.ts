@@ -208,10 +208,10 @@ export const makeUserEntity = ({
     }
 
     /**
-     * Setter oauth
-     * @param {IUserOAuthProvider[] } value
+     * add oauth
+     * @param {IUserOAuthProvider } value
      */
-    public addOAuth(value: Omit<IUserOAuthProvider, 'createdAt'>) {
+    public addOAuth(value: Omit<IUserOAuthProvider, 'createdAt'> & Partial<Pick<IUserOAuthProvider, 'createdAt'>>) {
       const index = this._oauth.findIndex((oauth) => oauth.provider === value.provider && oauth.sub === value.sub)
       if (index >= 0) {
         // just update the json value? not sure if really needed.
@@ -219,11 +219,15 @@ export const makeUserEntity = ({
       } else {
         this._oauth.push({
           ...value,
-          createdAt: Date.now()
+          createdAt: value.createdAt ?? Date.now()
         })
       }
     }
 
+    /**
+     * get the user object data.
+     * @returns 
+     */
     public toObject (): IUserEntity {
       return {
         _id: this._id,

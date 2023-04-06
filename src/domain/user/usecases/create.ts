@@ -35,11 +35,14 @@ export const makeUserCreateUsecase = (
           ...(data.oauth ? [{oauth: {$elemMatch: {provider: data.oauth.provider, sub: data.oauth.sub}}}] : [])
         ]
       })
+      console.log('user :>> ', user);
+      if (oauth) {
+        [...user.oauth, oauth].forEach((oauthProvider) => userEntity.addOAuth(oauthProvider))
+      }
       if (!user) {
         user = await repositoryGateway.insertOne(userEntity.toObject())
       } else {
         if (oauth) {
-          [...user.oauth, oauth].forEach((oauthProvider) => userEntity.addOAuth(oauthProvider))
           await repositoryGateway.updateOne({
             _id: user._id
           }, {

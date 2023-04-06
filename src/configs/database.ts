@@ -4,7 +4,6 @@ export class Database {
    * connect to the repository/database
    */
   public connect() {
-    console.log('process.env :>> ', process.env);
     const databaseConnectionString = (process.env.NODE_ENV === 'test' ? process.env.MONGO_TEST_URI :  `${process.env.DB_PREFIX}://${process.env.DB_HOST}/${process.env.DB_NAME}`) as string
     return mongoose
       .connect(databaseConnectionString, {

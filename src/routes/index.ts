@@ -39,9 +39,9 @@ export class AppRoute {
 
     appRoute.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
     appRoute.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-      res.redirect('/');
+      res.redirect('/api/users');
     });
-    appRoute.use("/users", new UserRoute().expose())
+    appRoute.use("/users", passport.authenticate('jwt', {session: false}), new UserRoute().expose())
     return appRoute
   }
   /**

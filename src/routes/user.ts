@@ -9,8 +9,11 @@ export class UserRoute {
       mergeParams: true
     })
     const appController = new UserController()
-    appRoute.post('/',
-      appController.addRoute
+    // appRoute.post('/',
+    //   appController.addRoute
+    // )
+    appRoute.get('/',
+      appController.detailsRoute
     )
     return appRoute
   }

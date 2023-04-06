@@ -5,6 +5,7 @@
  import passport, {} from 'passport'
  import {Strategy as JWTStrategy, ExtractJwt, VerifiedCallback} from 'passport-jwt'
  import GoogleStrategy from 'passport-google-oauth20';
+ import jwt from 'jsonwebtoken'
 //  import FacebookStrategy from 'passport-facebook';
 
 import {
@@ -15,10 +16,13 @@ import {
 import {
   UserCreateUsecase
 } from '@app/domain/user/usecases'
- export default () => {
+import { USER_OAUTH_PROVIDER } from '@app/domain';
+
+const jwtSecretKey = process.env.USER_SERVICE_API_SECRET_KEY || '';
+(() => {
    let JWTBearerAuthOption = {
      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-     secretOrKey: process.env.ACCOUNT_SERVICE_ACCESS_KEY_SECRET_ID,
+     secretOrKey: jwtSecretKey,
      passReqToCallback: true
    };
    
@@ -29,20 +33,21 @@ import {
     //  if (!req.headers.client && hasOriginalUri) {
     //    platform = hasOriginalUri.split('/')[3];
     //  }
-    //  const accessToken = authorization.split(' ')[1];
+     const accessToken = req.headers.authorization?.split(' ')[1];
+     console.log('accessToken :>> ', accessToken);
      const { hash = '' } = req.fingerprint ? req.fingerprint : {};
      const authOption = {fingerprint: hash, platform}
      done(null, {
       // some data that needed to be in "req.user"
      })
    }))
- }
+ })()
 
  // Google Auth
 passport.use(new GoogleStrategy.Strategy({
   clientID: GOOGLE_API_CLIENT_KEY,
   clientSecret: GOOGLE_API_CLIENT_SECRET,
-  callbackURL: '/api/auth/google/callback'
+  callbackURL: '/api/auth/google/callback',
 }, async (accessToken, refreshToken, profile, cb) => {
   const {_json} = profile || {}
   const user = await new UserCreateUsecase().execute({
@@ -50,25 +55,43 @@ passport.use(new GoogleStrategy.Strategy({
     lastName: _json.family_name || '',
     email: _json.email || '',
     displayName: _json.name,
+    // profileImageUrl: _json.picture, // can be enable later, not sure if really needed.
+    oauth: {
+      sub: profile.id,
+      provider: USER_OAUTH_PROVIDER.GOOGLE,
+      json: _json
+    }
     // but should also add the details of oauth
   })
   console.log('accessToken :>> ', accessToken);
   console.log('refreshToken :>> ', refreshToken);
   console.log('profile :>> ', profile);
+  console.log('userx :>> ', user);
+  
   // Here you can use the profile information returned
   // by Google to create a new user account or authenticate
   // an existing one.
-  console.log('user :>> ', user);
   return cb(null, user);
 }));
 
 passport.serializeUser((user: any, done) => {
-  console.log('user @ serialized user :>> ', user);
-  done(null, user);
+  // I think, generation of token should happen here.
+  console.log('@serializeUser :>> ', user);
+  console.log('@deserializeUser :>> ', user);
+  const accessToken = jwt.sign(user, jwtSecretKey, {
+    algorithm: 'RS256',
+    expiresIn: 60 * 1000 // 1 minute
+  })
+  console.log('accessToken :>> ', accessToken);
+  done(null,  {
+    user,
+    accessToken
+  });
 });
 
-passport.deserializeUser((id, done) => {
-  console.log('id :>> ', id);
+passport.deserializeUser((payload: any, done) => {
+  console.log('@deserializeUser :>> ', payload);
+  done(null, payload)
   // Look up the user by ID and return the user object
 });
 
