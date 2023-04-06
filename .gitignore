@@ -2,3 +2,5 @@ node_modules
 dist
 # YARN
 yarn-error-log
+
+.env
