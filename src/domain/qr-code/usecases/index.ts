@@ -3,11 +3,10 @@ import {
 } from '@app/persistent/repository/user'
 
 import {
-  makeUserCreateUsecase
+  makeQRCodeCreateUsecase
 } from './create'
 
 const repositoryGateway = new UserRepositoryGateway()
-
-export const UserCreateUsecase = makeUserCreateUsecase({
-  repositoryGateway
-})
+// export const QRCodeCreateUsecase = makeQRCodeCreateUsecase({
+//   repositoryGateway,
+// })

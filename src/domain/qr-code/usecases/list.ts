@@ -29,10 +29,10 @@ export const makeQRCodeListUsecase = (
         ownerId
       } = option
 
-      const list = await repositoryGateway.list({
-        ownerId
-      })
-      return list
+      // const list = await repositoryGateway.list({
+      //   ownerId
+      // })
+      // return list
     }
   }
 }

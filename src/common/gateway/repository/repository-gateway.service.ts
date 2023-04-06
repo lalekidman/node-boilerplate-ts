@@ -99,9 +99,9 @@ export default abstract class GeneralGatewayService<T extends Document, K> {
    * insert data
    * @param data
    */
-  public async insertOne(data: K) {
+  public async insertOne(data: K): Promise<K> {
     const newDocument = await this.initialize(data).save()
-    return newDocument.toObject()
+    return newDocument.toObject() as any
   }
   /**
    * insert bulk/mutiple data

@@ -15,7 +15,7 @@ export const makeQRCodeViewDetailsUsecase = (
      * @returns 
      */
     public async getOneById (id: string) {
-      return repositoryGateway.list({
+      return repositoryGateway.findOne({
         _id: id
       })
     }

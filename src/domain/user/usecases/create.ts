@@ -1,7 +1,7 @@
 
 import {
   UserEntity,
-  IUserBaseInput
+  IUserInput
 } from '../entity'
 
 import { IUserUsecaseDependencies } from './interfaces'
@@ -14,29 +14,41 @@ export const makeUserCreateUsecase = (
   return class UserCreateUsecase {
     constructor() {}
     /**
-     *
-     * @param data
-     * @param authorId user who did the request.
+     * 
+     * @param data 
+     * @returns 
      */
     public async execute(
-      data: IUserBaseInput,
-      // authorId: string
+      data: IUserInput,
     ) {
-  
-      const userEntity = new UserEntity(data)
-      const user = await repositoryGateway.insertOne({
-        _id: userEntity._id,
-        firstName: userEntity.firstName,
-        lastName: userEntity.lastName,
-        
-        suspended: userEntity.suspended,
-        suspendedAt: userEntity.suspendedAt,
-  
-        createdAt: userEntity.createdAt,
-        updatedAt: userEntity.updatedAt,
+      const {oauth, ..._data} = data
+      const userEntity = new UserEntity(_data)
+      // get by email, username, or oauth provider.
+      let user = await repositoryGateway.findOne({
+        $or: [
+          {
+            email: userEntity.email,
+          },
+          {
+            username: userEntity.username,
+          },
+          ...(data.oauth ? [{oauth: {$elemMatch: {provider: data.oauth.provider, sub: data.oauth.sub}}}] : [])
+        ]
       })
-  
-      return user
+      if (!user) {
+        user = await repositoryGateway.insertOne(userEntity.toObject())
+      } else {
+        if (oauth) {
+          [...user.oauth, oauth].forEach((oauthProvider) => userEntity.addOAuth(oauthProvider))
+          await repositoryGateway.updateOne({
+            _id: user._id
+          }, {
+            // just update the oauth.
+            oauth: userEntity.oauth
+          })
+        }
+      }
+      return userEntity.toObject()
     }
   }
 }

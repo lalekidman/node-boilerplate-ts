@@ -1,5 +1,5 @@
-  // add some thing here
-
-  // ## DEVNOTE##
-  // remove this in the future when there's already some enum to export on this file.
-  export {}
+  export enum USER_OAUTH_PROVIDER {
+    GOOGLE = 'google',
+    FACEBOOK = 'facebook',
+    APPLE = 'apple'
+  }

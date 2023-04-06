@@ -3,6 +3,7 @@ import { validationResult } from 'express-validator';
 import {Request, Response, NextFunction} from 'express'
 import * as HttpStatus from 'http-status'
 import {ImagesPattern} from './regex-pattern'
+import slugify from 'slugify'
 export interface IGeoInfo {
   range: number[]
   counter: string
@@ -130,4 +131,35 @@ export const generateQueryString = (queryString: string, queryData: any, fieldNa
     }
   }
   return queryString
+}
+
+interface IGenerateSlugOption {
+  length?: number
+  lower?: boolean
+}
+// transform, convert, generate, 
+export function transformToSlug (text: string, option?: IGenerateSlugOption) {
+  const {
+    length = 50,
+    lower = true
+  } = option || {}
+
+  const sluggedText = slugify(text, {
+    lower,
+    remove: /[_,\.]/,
+    strict: true,
+    trim: true
+  })
+
+  let slug = ''
+
+  for (const part of sluggedText.split('-')) {
+    // threshold or limit of the slug is 50
+    if (slug.length + part.length >= length) {
+      break;
+    }
+    // concat the word in the communityname slug
+    slug = slug.concat(`${slug ? '-' : ''}${part}`)
+  }
+  return slug
 }

@@ -11,21 +11,22 @@ export default class AppController {
       firstName = '',
       lastName = '',
     } = req.body
-    new UserCreateUsecase()
-      .execute({
-        firstName,
-        lastName
-      })
-      .then((user) => {
-        res.status(HttpStatus.CREATED).send(SuccessResponse(user))
-      })
-      .catch((error) => {
-        // ## TODO ##
-        // - how could I support the error from the throw?
-        new HttpErrorResponse(res, HttpStatus.BAD_REQUEST)
-          .track(ErrorCodes.CREATE_USER_DETAILS_FAILED)
-          .throw()
-      })
+    // new UserCreateUsecase()
+    //   .execute({
+    //     firstName,
+    //     lastName,
+
+    //   })
+    //   .then((user) => {
+    //     res.status(HttpStatus.CREATED).send(SuccessResponse(user))
+    //   })
+    //   .catch((error) => {
+    //     // ## TODO ##
+    //     // - how could I support the error from the throw?
+    //     new HttpErrorResponse(res, HttpStatus.BAD_REQUEST)
+    //       .track(ErrorCodes.CREATE_USER_DETAILS_FAILED)
+    //       .throw()
+    //   })
   }
   public updateRoute = (req: Request, res: Response, next: NextFunction) => {
   }

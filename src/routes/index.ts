@@ -1,5 +1,8 @@
+import passport from 'passport';
+
 import {Router} from 'express'
 import {UserRoute} from './user'
+
 export class AppRoute {
   
   constructor () {
@@ -33,6 +36,11 @@ export class AppRoute {
     const appRoute = Router({
       mergeParams: true
     })
+
+    appRoute.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+    appRoute.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+      res.redirect('/');
+    });
     appRoute.use("/users", new UserRoute().expose())
     return appRoute
   }
@@ -45,7 +53,6 @@ export class AppRoute {
     })
     appRoute.use("/", this.privateRoutes())
     appRoute.use("/api", this.publicRoutes())
-    appRoute.use("/api", this.protectedRoutes())
     return appRoute
   }
 }
