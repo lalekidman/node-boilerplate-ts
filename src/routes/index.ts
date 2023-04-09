@@ -2,6 +2,7 @@ import passport from 'passport';
 
 import {Router} from 'express'
 import {UserRoute} from './user'
+import {AuthRoute} from './auth'
 
 export class AppRoute {
   
@@ -39,8 +40,10 @@ export class AppRoute {
 
     appRoute.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
     appRoute.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-      res.redirect('/api/users');
+      res.redirect('/api/auth');
     });
+    // but it will always
+    appRoute.use("/auth", new AuthRoute().expose())
     appRoute.use("/users", passport.authenticate('jwt', {session: false}), new UserRoute().expose())
     return appRoute
   }

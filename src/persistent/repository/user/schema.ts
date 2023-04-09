@@ -65,7 +65,7 @@ const CollectionModelSchemaObject:Record<keyof IUserEntity, SchemaTypeOpts<any>>
   },
   oauth: {
     type: [new Schema(OauthModelSchemaObject, {_id: false, timestamps: {updatedAt: false, currentTime: Date.now}})],
-    defualt: []
+    default: []
   },
   suspended: {
     type: Boolean,

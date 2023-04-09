@@ -38,7 +38,7 @@ export class App {
     this.app.use(bodyParser.urlencoded({ extended: false }))
     this.app.use(session({
       secret: "sample-secret",
-      resave: true,
+      resave: false,
       rolling: true, // forces resetting of max age
       saveUninitialized: true,
       cookie: {

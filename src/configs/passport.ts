@@ -14,32 +14,40 @@ import {
   GOOGLE_API_CLIENT_SECRET
 } from '@app/common/constants'
 import {
-  UserCreateUsecase
+  UserCreateUsecase,
+  UserViewDetailsUsecase
 } from '@app/domain/user/usecases'
 import { USER_OAUTH_PROVIDER } from '@app/domain';
 
 const jwtSecretKey = process.env.USER_SERVICE_API_SECRET_KEY || '';
+console.log('GOOGLE_API_CLIENT_KEY :>> ', GOOGLE_API_CLIENT_KEY);
+console.log('GOOGLE_API_CLIENT_SECRET :>> ', GOOGLE_API_CLIENT_SECRET);
 (() => {
-   let JWTBearerAuthOption = {
+   const JWTBearerAuthOption = {
      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
      secretOrKey: jwtSecretKey,
      passReqToCallback: true
    };
    
-   passport.use(new JWTStrategy(JWTBearerAuthOption, (req: Request, payload: any, done: VerifiedCallback) => {
-
-     let platform = ''
-    //  const hasOriginalUri = req.headers['x-original-uri'];
-    //  if (!req.headers.client && hasOriginalUri) {
-    //    platform = hasOriginalUri.split('/')[3];
-    //  }
-     const accessToken = req.headers.authorization?.split(' ')[1];
-     console.log('accessToken :>> ', accessToken);
-     const { hash = '' } = req.fingerprint ? req.fingerprint : {};
-     const authOption = {fingerprint: hash, platform}
-     done(null, {
-      // some data that needed to be in "req.user"
-     })
+   passport.use(new JWTStrategy(JWTBearerAuthOption, async (req: Request, payload: any, done: VerifiedCallback) => {
+     try {
+        let platform = ''
+      //  const hasOriginalUri = req.headers['x-original-uri'];
+      //  if (!req.headers.client && hasOriginalUri) {
+      //    platform = hasOriginalUri.split('/')[3];
+      //  }
+      const accessToken = req.headers.authorization?.split(' ')[1];
+      console.log('accessToken :>> ', accessToken);
+      console.log('payload :>> ', payload);
+      const { hash = '' } = req.fingerprint ? req.fingerprint : {};
+      const authOption = {fingerprint: hash, platform}
+      const user = await new UserViewDetailsUsecase()
+        .getOneStrict(payload.sub)
+      //  aff2e4d6-37c2-454c-8679-66b0cf09075c
+      done(null, user)
+     } catch (error) {
+      done(error)
+     }
    }))
  })()
 
@@ -74,26 +82,27 @@ passport.use(new GoogleStrategy.Strategy({
   return cb(null, user);
 }));
 
+
+passport.deserializeUser((payload: any, done) => {
+  console.log('@deserializeUser :>> ', payload);
+  done(null, payload)
+});
+
+
 passport.serializeUser((user: any, done) => {
   // I think, generation of token should happen here.
-  console.log('@serializeUser :>> ', user);
-  console.log('@deserializeUser :>> ', user);
-  const accessToken = jwt.sign(user, jwtSecretKey, {
-    algorithm: 'RS256',
-    expiresIn: 60 * 1000 // 1 minute
+  const accessToken = jwt.sign({
+    sub: user._id,
+    // jti: user.id,
+  }, jwtSecretKey, {
+    expiresIn: (((60 * 60) * 24) * 30) * 1000 // 30 days
   })
-  console.log('accessToken :>> ', accessToken);
   done(null,  {
     user,
     accessToken
   });
 });
 
-passport.deserializeUser((payload: any, done) => {
-  console.log('@deserializeUser :>> ', payload);
-  done(null, payload)
-  // Look up the user by ID and return the user object
-});
 
 // // Facebook Auth
 // passport.use(new FacebookStrategy.Strategy({
