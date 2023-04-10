@@ -337,3 +337,19 @@ export default abstract class GeneralGatewayService<T extends Document, K> {
     return this.collectionModel.aggregate(pipeline as any).exec()
   }
 }
+
+
+export const GeneralStatusPropertyRepositoryObject = {
+  status: {
+    type: Boolean,
+    default: false,
+  },
+  authorId: {
+    type: String,
+    default: ''
+  },
+  createdAt: {
+    type: Number,
+    default: 0
+  }
+}
