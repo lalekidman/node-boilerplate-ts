@@ -1,9 +1,4 @@
 
-import {
-  IQRCodeEntityInput,
-  QRCodeEntity
-} from '../entity'
-
 import { IQRCodeUsecaseDependencies } from './interfaces'
 
 interface IQRCodeListOption {
@@ -16,7 +11,6 @@ export const makeQRCodeListUsecase = (
 ) => {
   return class QRCodeListUsecase {
     constructor() {}
-    
     /**
      * 
      * @param option 
@@ -29,10 +23,10 @@ export const makeQRCodeListUsecase = (
         ownerId
       } = option
 
-      // const list = await repositoryGateway.list({
-      //   ownerId
-      // })
-      // return list
+      const list = await repositoryGateway.list({
+        ownerId
+      })
+      return list
     }
   }
 }

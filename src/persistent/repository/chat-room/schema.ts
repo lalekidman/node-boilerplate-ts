@@ -51,6 +51,10 @@ const CollectionModelSchemaObject:Record<keyof IChatRoomEntity, SchemaTypeOpts<a
     type: String,
     required: true
   },
+  ownerId: {
+    type: String,
+    required: true
+  },
   members: {
     type: [new Schema(ChatRoomMemberModelSchemaObject, {
       _id: false,

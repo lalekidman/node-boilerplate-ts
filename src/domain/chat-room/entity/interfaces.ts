@@ -12,7 +12,9 @@ export interface IChatRoomEntity extends IGeneralEntityProperties {
   slug: string
   imageUrl: string // mostly will use in group chat room,
   members: IChatRoomMember[] // participants or members?
-  authorId: string // who do the scan in the QR.
+  ownerId: string // user who owned the qr
+  authorId: string // user who do the scan in the QR.
+  // author and target?
   // could I add type here? to identity if this thread is a just a peer2peer or p2p or but then, how?
   // I think slug can't help.
   // what would be my identifier to check if the both user already have a chat thread?
@@ -21,8 +23,11 @@ export interface IChatRoomEntity extends IGeneralEntityProperties {
 export interface IChatRoomMemberInput extends Omit<IChatRoomMember, 'joinedAt'>, Partial<Pick<IChatRoomMember, 'joinedAt'>> {
 }
 export interface IChatRoomInput extends Pick<IChatRoomEntity,
-  | 'name'
-  | 'imageUrl'
-> {
+| 'ownerId'
+| 'authorId'
+>, Partial<Pick<IChatRoomEntity,
+| 'name'
+| 'imageUrl'
+>> {
   members: IChatRoomMemberInput[]
 }

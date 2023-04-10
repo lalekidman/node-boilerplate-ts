@@ -1,6 +1,4 @@
 import {
-  IsString,
-  IsBoolean,
   IsNumeric
 } from "@app/common/decorators";
 import {
@@ -20,7 +18,7 @@ export const makeQRCodeEntity = ({
   class QRCodeEntity implements IQRCodeEntity {
     readonly _id: string;
 
-    private _displayName: string = '';
+    private _label: string = '';
     private _slug: string = '';
     private _ownerId: string = '';
     private _published: boolean = false;
@@ -36,7 +34,7 @@ export const makeQRCodeEntity = ({
       const {
         _id = generateId(),
 
-        displayName = this._displayName,
+        label = this._label,
         ownerId = this._ownerId,
 
         published = this._published,
@@ -50,8 +48,8 @@ export const makeQRCodeEntity = ({
       } = data
 
       this._id = _id
-      this.displayName = displayName
-      this._slug = this.displayName ? generateSlug(this.displayName) : ''
+      this.label = label
+      this._slug = this.label ? generateSlug(this.label) : ''
 
       this.ownerId = ownerId
 
@@ -67,19 +65,19 @@ export const makeQRCodeEntity = ({
 
 
     /**
-     * Getter displayName
+     * Getter label
      * @return {string }
      */
-    public get displayName(): string {
-      return this._displayName;
+    public get label(): string {
+      return this._label;
     }
 
     /**
-     * Setter displayName
+     * Setter label
      * @param {string } value
      */
-    public set displayName(value: string) {
-      this._displayName = value;
+    public set label(value: string) {
+      this._label = value;
     }
 
 
@@ -160,7 +158,7 @@ export const makeQRCodeEntity = ({
     public toObject ():IQRCodeEntity  {
       return {
         _id: this._id,
-        displayName: this.displayName,
+        label: this.label,
         slug: this.slug,
         ownerId: this.ownerId,
         published: this.published,

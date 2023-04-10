@@ -22,6 +22,7 @@ export const makeChatRoomEntity = ({
     private _slug: string = '';
     private _imageUrl: string = '';
     private _authorId: string = '';
+    private _ownerId: string = '';
     private _members: IChatRoomMember[] = [];
 
     readonly createdAt: number = Date.now();
@@ -35,6 +36,7 @@ export const makeChatRoomEntity = ({
         slug = this._slug,
         imageUrl = this._imageUrl,
         authorId = this._authorId,
+        ownerId = this._ownerId,
         members = this._members,
 
         createdAt = this.createdAt,
@@ -46,9 +48,10 @@ export const makeChatRoomEntity = ({
       this.name = name
       this.imageUrl = imageUrl
       this.authorId = authorId
+      this.ownerId = ownerId
 
       if (!slug && name) {
-        this.slug = generateSlug(this.name)
+        this._slug = generateSlug(this.name)
       }
 
       if (members && members.length >= 1) {
@@ -81,6 +84,7 @@ export const makeChatRoomEntity = ({
   })
 	public set name(value: string ) {
 		this._name = value;
+    this._slug = generateSlug(this._name)
 	}
 
 
@@ -90,14 +94,6 @@ export const makeChatRoomEntity = ({
      */
 	public get slug(): string  {
 		return this._slug;
-	}
-
-    /**
-     * Setter slug
-     * @param {string } value
-     */
-	public set slug(value: string ) {
-		this._slug = value;
 	}
 
     /**
@@ -130,6 +126,21 @@ export const makeChatRoomEntity = ({
 	public set authorId(value: string ) {
 		this._authorId = value;
 	}
+    /**
+     * Getter ownerId
+     * @return {string }
+     */
+	public get ownerId(): string  {
+		return this._ownerId;
+	}
+
+    /**
+     * Setter ownerId
+     * @param {string } value
+     */
+	public set ownerId(value: string ) {
+		this._ownerId = value;
+	}
 
     /**
      * Getter members
@@ -158,6 +169,7 @@ export const makeChatRoomEntity = ({
         slug: this._slug,
         imageUrl: this._imageUrl,
         authorId: this._authorId,
+        ownerId: this._ownerId,
         members: this._members,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt,

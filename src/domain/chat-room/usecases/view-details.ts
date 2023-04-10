@@ -1,5 +1,9 @@
 import { IChatRoomUsecaseDependencies } from './interfaces'
 
+interface IGetOneByAuthorAndOwnerIdOption {
+  ownerId: string
+  authorId: string
+}
 export const makeChatRoomViewDetailsUsecase = (
   {
     repositoryGateway
@@ -29,6 +33,47 @@ export const makeChatRoomViewDetailsUsecase = (
       id: string
     ) {
       const chatroom = await this.getOne(id)
+      if (!chatroom) {
+        throw new Error("No chatroom data found.")
+      }
+      return chatroom
+    }
+    /**
+     * get one ChatRoom
+     * throw error of no ChatRoom data found.
+     * @param id 
+     * @returns 
+     */
+    public async getOneByAuthorAndOwnerId(
+      {
+        authorId,
+        ownerId
+      }: IGetOneByAuthorAndOwnerIdOption
+    ) {
+      const chatroom = await repositoryGateway.findOne({
+        $or: [
+          {
+            ownerId,
+            authorId,
+          },
+          {
+            ownerId: authorId,
+            authorId: ownerId,
+          }
+        ]
+      })
+      return chatroom
+    }
+    /**
+     * get one ChatRoom
+     * throw error of no ChatRoom data found.
+     * @param id 
+     * @returns 
+     */
+    public async getOneByAuthorAndOwnerIdStrict(
+      option: IGetOneByAuthorAndOwnerIdOption
+    ) {
+      const chatroom = await this.getOneByAuthorAndOwnerId(option)
       if (!chatroom) {
         throw new Error("No chatroom data found.")
       }

@@ -3,12 +3,13 @@ import passport from 'passport';
 import {Router} from 'express'
 import {UserRoute} from './user'
 import {AuthRoute} from './auth'
+import {QRCodeRoute} from './qr-code'
 
 export class AppRoute {
   
   constructor () {
   }
-  
+  public authenticate = () => passport.authenticate('jwt', {session: false})
   /**
    * can only be use under docker network.
    * should not be exposed in web server like nginx.
@@ -27,7 +28,10 @@ export class AppRoute {
     const appRoute = Router({
       mergeParams: true
     })
-    appRoute.use("/users", new UserRoute().expose())
+    appRoute.use(this.authenticate())
+    // appRoute.use("/users", new UserRoute().expose())
+    appRoute.use("/qr-codes", new QRCodeRoute().expose())
+    appRoute.use("/users", this.authenticate(), new UserRoute().expose())
     return appRoute
   }
   /**
@@ -44,7 +48,7 @@ export class AppRoute {
     });
     // but it will always
     appRoute.use("/auth", new AuthRoute().expose())
-    appRoute.use("/users", passport.authenticate('jwt', {session: false}), new UserRoute().expose())
+    appRoute.use(this.protectedRoutes())
     return appRoute
   }
   /**

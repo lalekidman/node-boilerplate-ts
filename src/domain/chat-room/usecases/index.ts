@@ -8,20 +8,24 @@ import {
 // import {
 //   makeUserUpdateUsecase
 // } from './update'
-// import {
-//   makeUserViewDetailsUsecase
-// } from './view-details'
+import {
+  makeChatRoomViewDetailsUsecase
+} from './view-details'
+import {
+  UserViewDetailsUsecase
+} from '@app/domain/user/usecases'
 
 const repositoryGateway = new ChatRoomRepositoryGateway()
 
-export const ThreadCreateUsecase = makeChatRoomCreateUsecase({
-  repositoryGateway
+export const ChatRoomCreateUsecase = makeChatRoomCreateUsecase({
+  repositoryGateway,
+  getUserDetails: new UserViewDetailsUsecase().getOne
 })
 
 // export const UserUpdateUsecase = makeUserUpdateUsecase({
 //   repositoryGateway
 // })
 
-// export const UserViewDetailsUsecase = makeUserViewDetailsUsecase({
-//   repositoryGateway
-// })
+export const ChatRoomViewDetailsUsecase = makeChatRoomViewDetailsUsecase({
+  repositoryGateway
+})
