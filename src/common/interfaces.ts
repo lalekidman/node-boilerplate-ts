@@ -29,6 +29,11 @@ export interface IGeneralEntityProperties {
   readonly createdAt: number
   readonly updatedAt: number
 }
+export interface IGeneralStatusEntityProperties {
+  status: boolean
+  authorId: string
+  createdAt: number
+}
 export interface IGeneralEntityDependencies {
   generateId: () => string
 }

@@ -29,7 +29,6 @@ export default class AppController {
   public listRoute = (req: Request, res: Response, next: NextFunction) => {
   }
   public detailsRoute = (req: Request, res: Response, next: NextFunction) => {
-    console.log('req.user :>> ', req.user);
     res.send(req.user);
   }
   public registerOrLoginRoute = async (req: Request, res: Response, next: NextFunction) => {

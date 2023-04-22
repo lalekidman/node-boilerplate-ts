@@ -21,9 +21,11 @@ export const makeQRCodeCreateUsecase = (
      */
     public async execute(
       data: IQRCodeEntityInput,
+      userId: string,
     ) {
-  
       const entity = new QRCodeEntity(data)
+      entity.ownerId = userId
+      console.log('entqqqqqqity :>> ', entity.toObject());
       const node = await repositoryGateway.insertOne(entity.toObject())
   
       return node

@@ -21,7 +21,7 @@ export class AppRoute {
   
   constructor () {
   }
-  
+  public authenticate = () => passport.authenticate('jwt', {session: false})
   /**
    * can only be use under docker network.
    * should not be exposed in web server like nginx.
@@ -43,7 +43,7 @@ export class AppRoute {
     appRoute.use(this.authenticate())
     // appRoute.use("/users", new UserRoute().expose())
     appRoute.use("/qr-codes", new QRCodeRoute().expose())
-    appRoute.use("/users", new UserRoute().expose())
+    appRoute.use("/users", this.authenticate(), new UserRoute().expose())
     appRoute.use("/rooms/:roomId/messages", new MessagesRoute().expose())
     return appRoute
   }
@@ -57,9 +57,11 @@ export class AppRoute {
 
     appRoute.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
     appRoute.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-      res.redirect('/api/users');
+      res.redirect('/api/auth');
     });
-    appRoute.use("/users", passport.authenticate('jwt', {session: false}), new UserRoute().expose())
+    // but it will always
+    appRoute.use("/auth", new AuthRoute().expose())
+    appRoute.use(this.protectedRoutes())
     return appRoute
   }
   /**
