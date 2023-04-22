@@ -20,7 +20,7 @@ const CollectionModelSchemaObject:Record<keyof IQRCodeEntity, SchemaTypeOpts<any
     type: String,
     required: true,
   },
-  label: {
+  name: {
     type: String,
     required: true,
   },

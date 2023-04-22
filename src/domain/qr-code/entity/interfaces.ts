@@ -3,7 +3,7 @@ import {
 } from '@app/common/interfaces'
 
 export interface IQRCodeEntity extends IGeneralEntityProperties {
-  label: string // or just label
+  name: string // or just label
   slug: string
   ownerId: string // owner of the
 
@@ -16,5 +16,5 @@ export interface IQRCodeEntity extends IGeneralEntityProperties {
   // maybe the statuses are UNPUBLISH, PUBLISHED, 
   // is QR can be suspended by admins?
 }
-export interface IQRCodeEntityInput extends Pick<IQRCodeEntity, 'label'> {
+export interface IQRCodeEntityInput extends Pick<IQRCodeEntity, 'name'> {
 }

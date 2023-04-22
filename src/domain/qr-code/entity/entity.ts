@@ -18,7 +18,7 @@ export const makeQRCodeEntity = ({
   class QRCodeEntity implements IQRCodeEntity {
     readonly _id: string;
 
-    private _label: string = '';
+    private _name: string = '';
     private _slug: string = '';
     private _ownerId: string = '';
     private _published: boolean = false;
@@ -34,7 +34,7 @@ export const makeQRCodeEntity = ({
       const {
         _id = generateId(),
 
-        label = this._label,
+        name = this._name,
         ownerId = this._ownerId,
 
         published = this._published,
@@ -48,8 +48,8 @@ export const makeQRCodeEntity = ({
       } = data
 
       this._id = _id
-      this.label = label
-      this._slug = this.label ? generateSlug(this.label) : ''
+      this.name = name
+      this._slug = this.name ? generateSlug(this.name) : ''
 
       this.ownerId = ownerId
 
@@ -65,19 +65,19 @@ export const makeQRCodeEntity = ({
 
 
     /**
-     * Getter label
+     * Getter name
      * @return {string }
      */
-    public get label(): string {
-      return this._label;
+    public get name(): string {
+      return this._name;
     }
 
     /**
-     * Setter label
+     * Setter name
      * @param {string } value
      */
-    public set label(value: string) {
-      this._label = value;
+    public set name(value: string) {
+      this._name = value;
     }
 
 
@@ -158,7 +158,7 @@ export const makeQRCodeEntity = ({
     public toObject ():IQRCodeEntity  {
       return {
         _id: this._id,
-        label: this.label,
+        name: this.name,
         slug: this.slug,
         ownerId: this.ownerId,
         published: this.published,

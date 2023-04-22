@@ -30,7 +30,7 @@ export const makeQRCodeCreateUsecase = (
         await repositoryGateway.updateOne({
           _id: id,
         }, {
-          ...(entity.label ? {label: entity.label, slug: entity.slug} : {}),
+          ...(entity.name ? {name: entity.name, slug: entity.slug} : {}),
         })
         return entity.toObject()
       }
