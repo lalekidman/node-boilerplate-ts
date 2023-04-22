@@ -9,7 +9,7 @@ export interface IQRCodeEntity extends IGeneralEntityProperties {
 
   published: boolean
   publishedAt: number
-
+  
   suspended: boolean
   suspendedAt: number
   // status? activated? or status. like pending. should be pprove? nah. I don't think so.

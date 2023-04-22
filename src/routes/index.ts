@@ -1,7 +1,21 @@
 import passport from 'passport';
 
-import {Router} from 'express'
-import {UserRoute} from './user'
+import {
+  Router
+} from 'express'
+import {
+  UserRoute
+} from './user'
+import {
+  AuthRoute
+} from './auth'
+import {
+  QRCodeRoute
+} from './qr-code'
+
+import {
+  MessagesRoute
+} from './messages'
 
 export class AppRoute {
   
@@ -26,7 +40,11 @@ export class AppRoute {
     const appRoute = Router({
       mergeParams: true
     })
+    appRoute.use(this.authenticate())
+    // appRoute.use("/users", new UserRoute().expose())
+    appRoute.use("/qr-codes", new QRCodeRoute().expose())
     appRoute.use("/users", new UserRoute().expose())
+    appRoute.use("/rooms/:roomId/messages", new MessagesRoute().expose())
     return appRoute
   }
   /**

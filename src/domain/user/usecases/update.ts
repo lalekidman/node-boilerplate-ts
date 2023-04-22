@@ -21,18 +21,22 @@ export const makeUserUpdateUsecase = (
      */
     public async update (
       id: string,
-      dataInput: Partial<Omit<IUserInput, 'oauth'>>
+      dataInput: Partial<Omit<IUserInput, 'oauth' | 'email'>>
     ) {
+      console.log('dataInput :>> ', dataInput);
       const user = await repositoryGateway.findOne({_id: id})
       if (user) {
-        const entity = new UserEntity(dataInput)
+        const entity = new UserEntity({
+          ...user,
+          ...dataInput
+        })
         await repositoryGateway.updateOne({
           _id: id,
         }, {
-          ...(entity.firstName ? {firstName: entity.firstName} : {}),
-          ...(entity.lastName ? {lastName: entity.lastName} : {}),
-          ...(entity.profileImageUrl ? {profileImageUrl: entity.profileImageUrl} : {}),
-          ...(entity.displayName ? {displayName: entity.displayName, slug: entity.slug} : {}),
+          ...(dataInput.firstName ? {firstName: entity.firstName} : {}),
+          ...(dataInput.lastName ? {lastName: entity.lastName} : {}),
+          ...(dataInput.profileImageUrl ? {profileImageUrl: entity.profileImageUrl} : {}),
+          ...(dataInput.displayName ? {displayName: entity.displayName, slug: entity.slug} : {}),
         })
         return entity.toObject()
       }

@@ -3,7 +3,7 @@ import {
 } from '@app/common/gateway/repository/repository-gateway.interfaces'
 
 import {
-  IQRCodeEntity
+  IQRCodeEntity,
 } from './entity'
 
 export interface IQRCodeRepositoryGateway extends IGeneralRepositoryGateway < IQRCodeEntity > {
