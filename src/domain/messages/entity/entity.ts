@@ -3,9 +3,9 @@ import {
 } from "@app/common/decorators";
 import {
   IGeneralEntityDependencies,
-  IGeneralStatusEntityProperties
 } from "@app/common/interfaces";
 import {
+  IMessageDeleted,
   IMessageEntity
 } from './interfaces'
 
@@ -22,10 +22,11 @@ export const makeMessageEntity = ({
     private _parentId: string | null = null;
     private _authorId: string = '';
 
-    private _deleted: IGeneralStatusEntityProperties = {
+    private _deleted: IMessageDeleted = {
       status: false,
       authorId: '',
-      createdAt: 0
+      createdAt: 0,
+      remarks: null
     };
     readonly createdAt: number = Date.now();
     readonly updatedAt: number = Date.now();
@@ -55,7 +56,7 @@ export const makeMessageEntity = ({
       this.roomId = roomId
       this.parentId = parentId
 
-      this.deleted = deleted
+      this._deleted = deleted
 
       this.createdAt = createdAt
       this.updatedAt = updatedAt
@@ -143,18 +144,23 @@ export const makeMessageEntity = ({
 
     /**
      * Getter deleted
-     * @return {IGeneralStatusEntityProperties }
+     * @return {IMessageDeleted }
      */
-    public get deleted(): IGeneralStatusEntityProperties {
+    public get deleted(): IMessageDeleted {
       return this._deleted;
     }
 
     /**
-     * Setter deleted
-     * @param {IGeneralStatusEntityProperties } value
+     * 
+     * @param userId 
      */
-    public set deleted(value: IGeneralStatusEntityProperties) {
-      this._deleted = value;
+    public markAsDelete(userId: string, remarks: string|null) {
+      this._deleted = {
+        status: true,
+        authorId: userId,
+        createdAt: Date.now(),
+        remarks
+      };
     }
 
 

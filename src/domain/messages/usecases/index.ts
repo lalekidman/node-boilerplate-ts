@@ -8,6 +8,12 @@ import {
 import {
   makeMessageUpdateUsecase
 } from './update'
+import {
+  makeMessageRemoveUsecase
+} from './remove'
+import {
+  makeMessageListUsecase
+} from './list'
 
 const repositoryGateway = new MessageRepositoryGateway()
 
@@ -16,6 +22,13 @@ export const MessageCreateUsecase = makeMessageCreateUsecase({
 })
 
 export const MessageUpdateUsecase = makeMessageUpdateUsecase({
+  repositoryGateway
+})
+
+export const MessageListUsecase = makeMessageListUsecase({
+  repositoryGateway
+})
+export const MessageRemoveUsecase = makeMessageRemoveUsecase({
   repositoryGateway
 })
 
