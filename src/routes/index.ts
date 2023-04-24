@@ -16,6 +16,9 @@ import {
 import {
   MessagesRoute
 } from './messages'
+import {
+  ChatRoomRoute
+} from './chat-room'
 
 export class AppRoute {
   
@@ -44,6 +47,7 @@ export class AppRoute {
     // appRoute.use("/users", new UserRoute().expose())
     appRoute.use("/qr-codes", new QRCodeRoute().expose())
     appRoute.use("/users", this.authenticate(), new UserRoute().expose())
+    appRoute.use("/rooms", new ChatRoomRoute().expose())
     appRoute.use("/rooms/:roomId/messages", new MessagesRoute().expose())
     return appRoute
   }

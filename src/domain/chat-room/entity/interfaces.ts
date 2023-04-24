@@ -14,6 +14,7 @@ export interface IChatRoomEntity extends IGeneralEntityProperties {
   members: IChatRoomMember[] // participants or members?
   ownerId: string // user who owned the qr
   authorId: string // user who do the scan in the QR.
+  qrCodeId: string //
   // author and target?
   // could I add type here? to identity if this thread is a just a peer2peer or p2p or but then, how?
   // I think slug can't help.
@@ -25,6 +26,7 @@ export interface IChatRoomMemberInput extends Omit<IChatRoomMember, 'joinedAt'>,
 export interface IChatRoomInput extends Pick<IChatRoomEntity,
 | 'ownerId'
 | 'authorId'
+| 'qrCodeId'
 >, Partial<Pick<IChatRoomEntity,
 | 'name'
 | 'imageUrl'

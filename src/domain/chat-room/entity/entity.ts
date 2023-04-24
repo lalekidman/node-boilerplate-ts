@@ -23,6 +23,7 @@ export const makeChatRoomEntity = ({
     private _imageUrl: string = '';
     private _authorId: string = '';
     private _ownerId: string = '';
+    private _qrCodeId: string = '';
     private _members: IChatRoomMember[] = [];
 
     readonly createdAt: number = Date.now();
@@ -37,6 +38,7 @@ export const makeChatRoomEntity = ({
         imageUrl = this._imageUrl,
         authorId = this._authorId,
         ownerId = this._ownerId,
+        qrCodeId = this._qrCodeId,
         members = this._members,
 
         createdAt = this.createdAt,
@@ -49,6 +51,7 @@ export const makeChatRoomEntity = ({
       this.imageUrl = imageUrl
       this.authorId = authorId
       this.ownerId = ownerId
+      this.qrCodeId = qrCodeId
 
       if (!slug && name) {
         this._slug = generateSlug(this.name)
@@ -60,6 +63,8 @@ export const makeChatRoomEntity = ({
       this.createdAt = createdAt
       this.updatedAt = updatedAt
     }
+
+
 
 
     
@@ -142,7 +147,24 @@ export const makeChatRoomEntity = ({
 		this._ownerId = value;
 	}
 
-    /**
+  /**
+   * Getter qrCodeId
+   * @return {string }
+   */
+	public get qrCodeId(): string  {
+		return this._qrCodeId;
+	}
+
+  /**
+   * Setter qrCodeId
+   * @param {string } value
+   */
+	public set qrCodeId(value: string ) {
+		this._qrCodeId = value;
+	}
+  
+
+    /** 
      * Getter members
      * @return {IChatRoomMember[] }
      */
@@ -171,6 +193,7 @@ export const makeChatRoomEntity = ({
         authorId: this._authorId,
         ownerId: this._ownerId,
         members: this._members,
+        qrCodeId: this._qrCodeId,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt,
       }

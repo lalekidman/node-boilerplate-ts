@@ -8,10 +8,12 @@ import {
 import { IChatRoomUsecaseDependencies } from './interfaces'
 interface IChatRoomCreateUsecaseDependencies extends IChatRoomUsecaseDependencies {
   getUserDetails: (id: string) => Promise<IUserEntity>
+  getRoomDetails: (authorId: string, qrCodeId: string) => Promise<IChatRoomInput|null>
 }
 export const makeChatRoomCreateUsecase = (
   {
     repositoryGateway,
+    getRoomDetails,
     getUserDetails
   }: IChatRoomCreateUsecaseDependencies
 ) => {
@@ -30,7 +32,8 @@ export const makeChatRoomCreateUsecase = (
         members,
         name,
         authorId,
-        ownerId
+        ownerId,
+        qrCodeId
       } = data
       const entity = new ChatRoomEntity({
         name,
@@ -38,11 +41,17 @@ export const makeChatRoomCreateUsecase = (
         imageUrl,
         authorId,
         ownerId,
+        qrCodeId,
       })
       if (!entity.name) {
         // use the user display name as a default value of `name` is not provided.
         entity.name = (await getUserDetails(entity.ownerId)).displayName
       }
+      if (await getRoomDetails(entity.authorId, entity.qrCodeId)) {
+        // throw already exists.
+        throw new Error("Room is already exists for this qr code.")
+      }
+      // save to repository
       await repositoryGateway.insertOne(entity.toObject())
       return entity.toObject()
     }

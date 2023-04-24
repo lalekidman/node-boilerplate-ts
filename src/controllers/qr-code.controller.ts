@@ -73,28 +73,14 @@ export class QRCodeController {
       //      - should check if there's any existing chat room, if not, then create one.
       //       - if yes, then use it.
       
-      let chatroom = await new ChatRoomViewDetailsUsecase()
-        .getOneByAuthorAndOwnerId({authorId: user._id, ownerId: node.ownerId})
-      if (!chatroom) {
-        chatroom = await new ChatRoomCreateUsecase().execute({
-          authorId: user._id,
-          ownerId: node.ownerId,
-          members: [
-            {
-              authorId: user._id,
-              userId: node.ownerId
-            },
-            {
-              authorId: user._id,
-              userId: user._id
-            },
-          ]
-        })
-      }
-      
+      const chatroom = await new ChatRoomViewDetailsUsecase()
+        .IGetOneByAuthorIdAndQRIdOption({authorId: user._id, qrCodeId: node._id})
       res
         .status(httpStatus.OK)
-        .send(chatroom)
+        .send({
+          data: node,
+          room: chatroom
+        })
     } catch (error: any) {
       res
         .status(httpStatus.BAD_REQUEST)

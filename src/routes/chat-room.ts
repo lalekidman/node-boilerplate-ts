@@ -9,9 +9,12 @@ export class ChatRoomRoute {
       mergeParams: true
     })
     const appController = new ChatRoomController()
-    // appRoute.post('/',
-    //   appController.addRoute
-    // )
+    appRoute.post('/',
+      appController.addRoute
+    )
+    appRoute.get('/',
+      appController.listRoute
+    )
     appRoute.get('/:id',
       appController.detailsRoute
     )

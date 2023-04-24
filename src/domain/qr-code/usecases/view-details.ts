@@ -19,5 +19,18 @@ export const makeQRCodeViewDetailsUsecase = (
         _id: id
       })
     }
+    /**
+     * get qr code data by id
+     * throw error if no data found.
+     * @param data 
+     * @returns 
+     */
+    public async getOneByIdStrict (id: string) {
+      const node = await this.getOneById(id)
+      if (!node) {
+        throw new Error("No qr code data found.")
+      }
+      return node
+    }
   }
 }

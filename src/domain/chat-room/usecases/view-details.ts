@@ -1,4 +1,13 @@
 import { IChatRoomUsecaseDependencies } from './interfaces'
+import {
+  IChatRoomEntity
+} from '../entity/interfaces'
+
+interface IGetOneByAuthorAndQRIdOption extends Pick<IChatRoomEntity,
+ | 'qrCodeId'
+ | 'authorId'
+> {
+}
 
 interface IGetOneByAuthorAndOwnerIdOption {
   ownerId: string
@@ -65,9 +74,8 @@ export const makeChatRoomViewDetailsUsecase = (
       return chatroom
     }
     /**
-     * get one ChatRoom
-     * throw error of no ChatRoom data found.
-     * @param id 
+     * 
+     * @param option 
      * @returns 
      */
     public async getOneByAuthorAndOwnerIdStrict(
@@ -78,6 +86,23 @@ export const makeChatRoomViewDetailsUsecase = (
         throw new Error("No chatroom data found.")
       }
       return chatroom
+    }
+
+    /**
+     * get chat room by author and qr
+     * @param id 
+     * @returns 
+     */
+    public async IGetOneByAuthorIdAndQRIdOption (
+      {
+        authorId,
+        qrCodeId,
+      }: IGetOneByAuthorAndQRIdOption
+    ) {
+      return repositoryGateway.findOne({
+        authorId,
+        qrCodeId
+      })
     }
   }
 }
